@@ -1,7 +1,9 @@
-name: CI + CD Pipeline
+name: Production CI/CD
 
 on:
   push:
+    branches: ["master"]
+  pull_request:
     branches: ["master"]
 
 permissions:
@@ -10,27 +12,50 @@ permissions:
   id-token: write
 
 jobs:
-  build-and-deploy:
+  test:
+    name: 🧪 Test & Coverage Job   # ✅ job name
     runs-on: ubuntu-latest
 
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          # cache: "npm"
+          cache: "npm"
+          cache-dependency-path: my-react-app/package-lock.json
 
       - name: 📦 Install Dependencies
         run: npm install
         working-directory: my-react-app
-      - name: 🧪 Run Tests
+
+      - name: 🧪 Run Tests with Coverage
         run: npm test
         working-directory: my-react-app
 
-      - name: 🏗️ Build Project
+  build:
+    name: 🏗️ Build Job
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: my-react-app/package-lock.json
+
+      - name: 📦 Install Dependencies
+        run: npm install
+        working-directory: my-react-app
+
+      - name: 🏗️ Build Frontend
         run: npm run build
         working-directory: my-react-app
 
@@ -39,5 +64,11 @@ jobs:
         with:
           path: my-react-app/dist
 
+  deploy:
+    name: 🚀 Deploy Job
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       - name: 🚀 Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
