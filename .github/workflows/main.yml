@@ -67,6 +67,8 @@ jobs:
       - name: 🔍 Debug files
         run: ls -la
         working-directory: my-react-app
+      - name: 🔍 Debug username
+        run: echo "USER=${{ secrets.DOCKER_USERNAME }}"
 
       # - name: 🐳 Build Docker Image
       #   run: docker build -t my-react-app .
