@@ -89,7 +89,7 @@ jobs:
       - name: 🚀 Push Docker Image
         run: |
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/my-react-app"
-          docker build -t "$IMAGE_NAME" .
+          docker push "$IMAGE_NAME"
         working-directory: my-react-app
 
   deploy:
