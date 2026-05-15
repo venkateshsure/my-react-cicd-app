@@ -10,7 +10,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch("http://localhost:5000/employee")
+    fetch("http://backend:5000/employee")
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
