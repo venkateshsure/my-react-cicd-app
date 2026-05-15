@@ -2,11 +2,11 @@ import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import App from "./App";
 
-global.fetch = vi.fn(() =>
+vi.stubGlobal("fetch", vi.fn(() =>
   Promise.resolve({
     json: () => Promise.resolve([]),
   })
-) as any;
+) as any);
 
 test("renders heading text", () => {
   render(<App />);
