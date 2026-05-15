@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -6,6 +6,17 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [user, setUser] = useState<Array<{ id: number; name: string }>>([])
+
+
+  useEffect(() => {
+    fetch("http://localhost:5000/employee")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        setUser(data)
+      })
+  }, [])
 
   return (
     <>
@@ -28,6 +39,7 @@ function App() {
           Count is {count}
         </button>
       </section>
+      <h1>UserName: {user[0]?.name} ID: {user[0]?.id}</h1>
 
       <div className="ticks"></div>
 

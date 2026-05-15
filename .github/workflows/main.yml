@@ -91,6 +91,18 @@ jobs:
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/my-react-app"
           docker build -t "$IMAGE_NAME" .
 
+      - name: 🐳 Build Backend Docker Image
+        run: |
+          IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/backend-api"
+          docker build -t "$IMAGE_NAME" .
+        working-directory: backend
+        
+      - name: 🚀 Push Backend Docker Image
+        run: |
+          IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/backend-api"
+          docker push "$IMAGE_NAME"
+        working-directory: backend
+
   deploy:
     name: 🚀 Deploy Job
     needs: build
