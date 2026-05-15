@@ -25,4 +25,4 @@ coverage
 *.sw?
  
  #env files
-.env
+*.env
